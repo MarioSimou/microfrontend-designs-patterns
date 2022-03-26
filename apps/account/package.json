@@ -11,7 +11,9 @@
     "unit": "cross-env BABEL_ENV=test jest",
     "watch-tests": "cross-env BABEL_ENV=test jest --watch",
     "coverage": "cross-env BABEL_ENV=test jest --coverage",
-    "build:types": "tsc"
+    "build:types": "tsc",
+    "deploy:dev": "firebase emulators:start --only hosting:account",
+    "deploy:prod": "firebase deploy --only hosting:account"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

@@ -1,0 +1,7 @@
+{
+  "hosting": {
+    "target": "account",
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}

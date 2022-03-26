@@ -62,3 +62,22 @@ jobs:
 
       - name: Build
         run: npm run build
+  deploy:
+    runs-on: ubuntu-20.04
+    needs: [lint, unit, build]
+    if: ${{ needs.lint.result == 'success' && needs.unit.result == 'success' && needs.build.result == 'success' && 'success' || 'failure'  }}
+    env:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g yarn firebase-tools
+
+      - name: Deploy
+        run: npm run deploy:prod

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "microfrontends-design-patterns"
+  },
+  "targets": {
+    "microfrontends-design-patterns": {
+      "hosting": {
+        "posts": [
+          "mf-design-patterns-posts"
+        ]
+      }
+    }
+  }
+}

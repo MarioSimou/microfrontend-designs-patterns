@@ -14,7 +14,8 @@
     "lint:format": "turbo run lint:format",
     "unit": "turbo run unit",
     "prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prettier:format": "npm run prettier -- --write"
+    "prettier:format": "npm run prettier -- --write",
+    "deploy:prod": "turbo run deploy:prod --parallel"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
