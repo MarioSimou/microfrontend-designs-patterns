@@ -9,8 +9,13 @@
 6) firebase deploy --only hosting:[target-name]
 
 # Helpful Commands
+PROJECT_ID=microfrontends-design-patterns
+
+firebase open --project $PROJECT_ID
+firebase projects:list
+firebase hosting:sites:list --project $PROJECT_ID
 firebase hosting:sites:delete [site-id]
-firebase hosting:sites:list
+
 ```
 
 ## Useful Links

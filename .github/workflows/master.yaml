@@ -68,6 +68,9 @@ jobs:
     if: ${{ needs.lint.result == 'success' && needs.unit.result == 'success' && needs.build.result == 'success' && 'success' || 'failure'  }}
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      ACCOUNT_BUNDLE_URL: ${{ secrets.ACCOUNT_BUNDLE_URL }}
+      POSTS_BUNDLE_URL: ${{ secrets.POSTS_BUNDLE_URL }}
+      ROOT_BUNDLE_URL: ${{ secrets.ROOT_BUNDLE_URL }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2

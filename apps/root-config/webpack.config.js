@@ -12,6 +12,11 @@ module.exports = (webpackConfigEnv, argv) => {
     disableHtmlGeneration: true,
   })
 
+  const isLocal = webpackConfigEnv && webpackConfigEnv.isLocal
+  const rootBundleUrl = process.env.ROOT_BUNDLE_URL ?? 'http://localhost:9000/dailyposts-root-config.js'
+  const postsBundleUrl = process.env.POSTS_BUNDLE_URL ?? 'http://localhost:9002/dailyposts-posts.js'
+  const accountBundleUrl = process.env.ACCOUNT_BUNDLE_URL ?? 'http://localhost:9001/dailyposts-account.js'
+
   return merge(defaultConfig, {
     // modify the webpack config however you'd like to by adding to this object
     plugins: [
@@ -19,7 +24,10 @@ module.exports = (webpackConfigEnv, argv) => {
         inject: false,
         template: 'src/index.ejs',
         templateParameters: {
-          isLocal: webpackConfigEnv && webpackConfigEnv.isLocal,
+          isLocal,
+          rootBundleUrl,
+          accountBundleUrl,
+          postsBundleUrl,
           orgName,
         },
       }),
