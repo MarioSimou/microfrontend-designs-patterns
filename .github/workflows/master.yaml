@@ -1,0 +1,64 @@
+name: Master Pipeline
+
+on:
+  push:
+    branches:
+      - single-spa-react-vertical-split
+
+env:
+  NODE_VERSION: lts/gallium
+  REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+  REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+  REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
+  REACT_APP_MEASUREMENT_ID: ${{ secrets.REACT_APP_MEASUREMENT_ID }}
+  REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
+  REACT_APP_PROJECT_ID: ${{ secrets.REACT_APP_PROJECT_ID }}
+  REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g yarn
+
+      - name: Units
+        run: |
+          npm run unit
+  unit:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g yarn
+
+      - name: Units
+        run: |
+          npm run unit
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g yarn
+
+      - name: Build
+        run: npm run build

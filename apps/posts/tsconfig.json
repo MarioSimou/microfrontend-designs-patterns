@@ -1,0 +1,17 @@
+{
+  "extends": "config/tsconfig/spa.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "declarationDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@types": ["./src/types/index.ts"],
+      "@components/*": ["./src/components/*"],
+      "@features/*": ["./src/features/*"],
+      "@lib/*": ["../../packages/lib/*"]
+    }
+  },
+  "files": ["src/dailyposts-posts.tsx"],
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*"]
+}

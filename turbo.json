@@ -1,0 +1,24 @@
+{
+  "npmClient": "npm",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "lint:format": {
+      "outputs": []
+    },
+    "unit": {
+      "outputs": ["coverage/**"]
+    },
+    "start": {
+      "cache": false
+    },
+    "start:standalone": {
+      "cache": false
+    }
+  }
+}

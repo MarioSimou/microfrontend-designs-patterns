@@ -1,0 +1,23 @@
+{
+  "name": "turborepo-basic-npm",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "start": "turbo run start --parallel",
+    "start:standalone": "turbo run start:standalone --parallel",
+    "lint": "turbo run lint",
+    "lint:format": "turbo run lint:format",
+    "unit": "turbo run unit",
+    "prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prettier:format": "npm run prettier -- --write"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1",
+    "turbo": "*"
+  }
+}
