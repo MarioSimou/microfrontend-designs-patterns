@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./main.css" >
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="header-link" data-micro-app="app1">Application A</span>
+        <span class="header-link" data-micro-app="app2">Application B</span>
+      </header>
+      <div id="container">
+          <h1>without microfrontend</h1>
+      </div>
+    </main>
+    <script>
+      window.__APPLICATION_SHELL__ = {
+        lifecycle: undefined
+      }
+
+      window.registerMicroApp = (newMicroAppLifecycle = {}) => {
+        if(!newMicroAppLifecycle.mount) {
+          throw new Error('mount function is required')
+        }
+
+        if(!newMicroAppLifecycle.umount){
+          unmount = () => console.log("set default unmount function")
+        }
+
+        const {lifecycle: currentMicroAppLifecycle} = window.__APPLICATION_SHELL__
+        if(currentMicroAppLifecycle){
+          currentMicroAppLifecycle.unmount()
+        }
+
+        window.__APPLICATION_SHELL__.lifecycle = newMicroAppLifecycle
+        newMicroAppLifecycle.mount()
+      } 
+
+      const microAppsScripts = {
+        "app1": "http://localhost:4566/application-shell-bucket/app1/index.js",
+        "app2": "http://localhost:4566/application-shell-bucket/app2/index.js",
+      };
+
+      const pushState = (path) => {
+        window.history.pushState({}, "", path);
+      };
+      const onClickLink = (e) => {
+        console.log("rendering a new view...")
+        e.preventDefault();
+
+        const microApp = e.target.getAttribute("data-micro-app");
+        const targetScript = microAppsScripts[microApp];
+        console.info(
+          "target app: ",
+          microApp,
+          "\tredirecting to: ",
+          targetScript
+        );
+        pushState(`/${microApp}`);
+
+        const script = document.createElement("script");
+        script.src = targetScript;
+        script.type = "application/javascript";
+        script.dataset.microApp = microApp;
+        document.head.append(script);
+      };
+      Array.from(document.querySelectorAll(".header-link")).forEach(el => {
+        el.addEventListener("click", onClickLink);
+      })
+
+    </script>
+  </body>
+</html>
