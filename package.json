@@ -1,0 +1,16 @@
+{
+  "name": "microfrontend-design-patterns",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "start:dev": "turbo run start:dev --parallel",
+    "start:prod": "turbo run start:prod --parallel",
+    "prettier:format": "prettier --write \"**/*.{ts,tsx,js,html,md}\""
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "prettier": "latest",
+    "turbo": "latest"
+  }
+}
