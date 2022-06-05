@@ -9,7 +9,6 @@
     "prettier:format": "prettier --write \"**/*.{ts,tsx,js,html,md}\""
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
     "prettier": "latest",
     "turbo": "latest"
   }
