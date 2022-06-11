@@ -24,7 +24,7 @@
   "scripts": {
     "start:dev": "PORT=3002 react-scripts start",
     "start:prod": "serve -p 3002 dist",
-    "build": "PUBLIC_URL=http://localhost:3002 BUILD_PATH=dist react-scripts build",
+    "build": "BUILD_PATH=dist react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
