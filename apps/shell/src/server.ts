@@ -7,7 +7,7 @@ import pinoHTTP from 'pino-http'
 
 const port = process.env.PORT ?? 3000
 const server = express()
-const pagesPath = getPath('src', 'pages')
+const pagesPath = getPath('src', 'apps')
 const pino = pinoHTTP({
   autoLogging: false,
 })

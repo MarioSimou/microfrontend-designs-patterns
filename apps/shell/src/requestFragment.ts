@@ -2,28 +2,57 @@ import {Request, Response} from 'express'
 import http from 'http'
 import https from 'https'
 import {URL} from 'node:url'
+import {applications} from './utils'
 
-const getFragmentURL = (fragmentURL: string, req: Request): URL => {
-  const url = new URL(fragmentURL)
-  const {protocol, host} = url
-  const baseURL = `${protocol}//${host}`
+type Application = 'posts' | 'auth'
+type Maybe<TData> = TData | undefined
 
+const getApplicationName = (pathName: string): Maybe<Application> => {
   switch (true) {
-    case /\/posts\/\:postId$/.test(fragmentURL): {
-      return new URL(req.url, baseURL)
+    case /\/posts(\/.+)?$/.test(pathName): {
+      return 'posts'
     }
-    default:
-      return url
+    case /\/sign-in/.test(pathName): {
+      return 'auth'
+    }
+    default: {
+      return undefined
+    }
   }
 }
 
-const requestFragment = (fragmentUrl: string, _: FragmentAttributes, req: Request): Promise<Response> =>
+const getApplicationBaseURL = (applicationName: Maybe<Application>): Maybe<string> => {
+  switch (applicationName) {
+    case 'auth': {
+      return applications.auth.baseURL
+    }
+    case 'posts': {
+      return applications.posts.baseURL
+    }
+    default: {
+      return undefined
+    }
+  }
+}
+
+const getFragmentURL = (req: Request): URL => {
+  const applicationName = getApplicationName(req.url)
+  const baseURL = getApplicationBaseURL(applicationName)
+
+  // fallback url
+  if (!baseURL || !applicationName) {
+    return new URL('http://localhost:3000/public/404.html')
+  }
+
+  return new URL(req.url, baseURL)
+}
+
+const requestFragment = (_: string, __: FragmentAttributes, req: Request): Promise<Response> =>
   new Promise((resolve, reject) => {
     try {
-      const options = getFragmentURL(fragmentUrl, req)
-      const isHTTP = options.protocol === 'http:'
+      const options = getFragmentURL(req)
 
-      const fragmentRequest = isHTTP ? http.request(options) : https.request(options)
+      const fragmentRequest = req.secure ? https.request(options) : http.request(options)
       fragmentRequest.on('response', (res: Response) => {
         if (res.statusCode !== 200) {
           return reject('error')

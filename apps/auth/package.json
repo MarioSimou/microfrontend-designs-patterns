@@ -22,7 +22,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start:dev": "PORT=3002 react-scripts start",
+    "start:dev": "PORT=3002 BROWSER=none react-scripts start",
     "start:prod": "serve -p 3002 dist",
     "build": "BUILD_PATH=dist react-scripts build",
     "test": "react-scripts test",

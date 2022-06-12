@@ -79,7 +79,7 @@ const EditPost: NextPage<EditPostProps> = ({post}) => {
             error={formValues.createdAt.error}
             disabled
             label="Created At:">
-            <Input value={formatDate(formValues.createdAt.value)} />
+            <Input defaultValue={formatDate(formValues.createdAt.value)} />
           </Field>
 
           <Button type="button" mt="1rem" colorScheme="teal" onClick={onSubmitForm}>

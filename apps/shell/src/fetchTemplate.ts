@@ -5,16 +5,10 @@ import {getPath} from './utils'
 
 const readFilePromise = promisify(readFile)
 
-const getPageTemplate = (req: Request): string => {
+const getApplicationTemplate = (req: Request): string => {
   switch (true) {
-    case /^\/posts\/?$/.test(req.url): {
+    case /^\/posts(\/.+)?$/.test(req.url): {
       return 'posts.html'
-    }
-    case /^\/posts\/new$/.test(req.url): {
-      return 'createPost.html'
-    }
-    case /^\/posts\/[0-9a-zA-Z-]+$/.test(req.url): {
-      return 'post.html'
     }
     case /\/sign-in$/.test(req.url): {
       return 'sign-in.html'
@@ -26,8 +20,8 @@ const getPageTemplate = (req: Request): string => {
 
 const fetchTemplate = async (req: Request, parseTemplate: (path: string) => string): Promise<unknown> => {
   try {
-    const templateName = getPageTemplate(req)
-    const templatePath = getPath('src', 'pages', templateName)
+    const templateName = getApplicationTemplate(req)
+    const templatePath = getPath('src', 'apps', templateName)
     const template = await readFilePromise(templatePath, {encoding: 'utf-8'})
 
     if (!template) {

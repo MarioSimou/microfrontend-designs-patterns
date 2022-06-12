@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/src/index.js",
   "scripts": {
-    "start:dev": "nodemon -e .ts,.html -x ts-node ./src/server.ts",
+    "start:dev": "env-cmd -f ./.env.development nodemon -e .ts,.html -x ts-node ./src/server.ts",
     "start:prod": "node ./dist/src/index.js",
     "build": "tsc -p tsconfig.json",
     "ts:check": "tsc -p tsconfig.json --noEmit"
@@ -22,6 +22,7 @@
     "@tsconfig/node16": "^1.0.3",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.42",
+    "env-cmd": "^10.1.0",
     "nodemon": "^2.0.16",
     "ts-node": "^10.8.1",
     "tslib": "^2.4.0",

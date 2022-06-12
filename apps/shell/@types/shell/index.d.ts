@@ -1,6 +1,8 @@
 declare module NodeJS {
   interface ProcessEnv {
     PORT: string
+    APPLICATION_POSTS_BASE_URL: string
+    APPLICATION_AUTH_BASE_URL: string
   }
 }
 interface FragmentAttributes {
