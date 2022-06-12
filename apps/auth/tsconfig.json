@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2021",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -18,10 +17,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
   },
   "include": [
     "src",
     "./global.d.ts"
-  ]
+  ],
+  "exclude": ["node_modules"],
 }

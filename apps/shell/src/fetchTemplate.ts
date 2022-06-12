@@ -11,7 +11,7 @@ const getApplicationTemplate = (req: Request): string => {
       return 'posts.html'
     }
     case /\/sign-in$/.test(req.url): {
-      return 'sign-in.html'
+      return 'auth.html'
     }
   }
 
