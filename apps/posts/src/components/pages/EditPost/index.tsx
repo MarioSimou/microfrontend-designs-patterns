@@ -1,4 +1,4 @@
-import {Flex, useToast, Button, Heading, Text, VStack, Textarea, Input} from '@chakra-ui/react'
+import {Flex, useToast, Button, Heading, VStack, Textarea, Input} from '@chakra-ui/react'
 import {Field} from '@features/components'
 import {useFormValues, usePosts} from '@features/hooks'
 import {v4 as uuid} from 'uuid'

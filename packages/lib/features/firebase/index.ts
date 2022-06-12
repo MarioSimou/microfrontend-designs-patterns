@@ -1,7 +1,9 @@
 import {initializeFirestore, Firestore} from 'firebase/firestore'
 import {initializeApp, FirebaseApp} from 'firebase/app'
 import type {Nullable} from '@types'
-import {newFirestoreFactory} from 'lib/features/firebase'
+import {newFirestoreFactory} from './firestore'
+
+export * from './firestore'
 
 let app: Nullable<FirebaseApp> = null
 let firestore: Nullable<Firestore> = null

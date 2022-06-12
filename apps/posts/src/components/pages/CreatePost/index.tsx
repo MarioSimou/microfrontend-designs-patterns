@@ -4,7 +4,6 @@ import {useFormValues, usePosts} from '@features/hooks'
 import {v4 as uuid} from 'uuid'
 import {useRouter} from 'next/router'
 import {formatDate} from '@features/utils'
-import {getConfig} from '@features/configuration'
 
 const CreatePost = () => {
   const router = useRouter()
@@ -76,7 +75,7 @@ const CreatePost = () => {
             error={formValues.createdAt.error}
             disabled
             label="Created At:">
-            <Input value={formatDate(formValues.createdAt.value)} />
+            <Input defaultValue={formatDate(formValues.createdAt.value)} />
           </Field>
 
           <Button type="button" mt="1rem" colorScheme="teal" onClick={onSubmitForm}>

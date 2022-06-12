@@ -1,8 +1,8 @@
-import {Flex, Heading, Text, Divider, useTheme} from '@chakra-ui/react'
+import {Flex, Heading, Text, Divider, theme} from '@chakra-ui/react'
 import type {Post} from '@types'
 import Link from 'next/link'
 import {formatDate} from '@features/utils'
-import {motion, Variants, useViewportScroll} from 'framer-motion'
+import {motion, Variants} from 'framer-motion'
 import React from 'react'
 
 type PostCardProps = {
@@ -10,34 +10,31 @@ type PostCardProps = {
   index?: number
 }
 
-export const PostCard: React.FC<PostCardProps> = ({post}) => {
-  const theme = useTheme()
-  const variants: Variants = {
-    hidden: {
-      opacity: 0,
-      scale: 0,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      background: theme.colors.gray['200'],
-      borderRadius: '0.5rem',
-    },
-    hovered: {
-      scale: 0.95,
-      background: theme.colors.gray['100'],
-    },
-  }
+const variants: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    borderRadius: '0.5rem',
+  },
+  hovered: {
+    scale: 0.95,
+  },
+}
 
+export const PostCard: React.FC<PostCardProps> = ({post}) => {
   return (
     <motion.div
       variants={variants}
+      style={{opacity: 0, scale: 0}}
       initial="hidden"
       whileInView="visible"
-      style={{opacity: 0, scale: 0}}
       whileHover="hovered">
       <Link href={`/posts/${post.id}`}>
-        <Flex as="a" flexDir="column" p="1rem 1.25rem" w="100%" _hover={{cursor: 'pointer'}}>
+        <Flex as="a" flexDir="column" p="1rem 1.25rem" w="100%" _hover={{cursor: 'pointer'}} bg="gray.200">
           <Flex flexDir="column" rowGap="0.5rem">
             <Heading as="h2" fontSize="1.1rem" fontWeight={500}>
               {post.title}

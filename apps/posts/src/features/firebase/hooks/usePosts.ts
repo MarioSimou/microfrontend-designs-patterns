@@ -1,5 +1,5 @@
 import React from 'react'
-import {newFirebaseFactory, ErrDocsNotFound} from '@features/firebase'
+import {newFirebaseFactory, ErrDocsNotFound} from 'lib/features/firebase'
 import type {Post} from '@types'
 
 export const usePosts = () => {

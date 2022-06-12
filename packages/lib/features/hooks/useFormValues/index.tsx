@@ -28,7 +28,7 @@ export const useFormValues = <Fields extends Record<string, unknown>>(fields: Fi
   const [formValues, setFormValues] = React.useState(mapFieldsToFormValues(fields))
 
   const setValue = React.useCallback(
-    <TValue>(id: string, value: TValue) => {
+    <TValue,>(id: string, value: TValue) => {
       return setFormValues(formValues => ({
         ...formValues,
         [id]: {

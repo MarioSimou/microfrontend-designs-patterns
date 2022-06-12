@@ -1,16 +1,5 @@
 import React from 'react'
-import {
-  FormControl,
-  FormControlProps,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Collapse,
-  Textarea,
-  InputProps,
-  TextareaProps,
-} from '@chakra-ui/react'
+import {FormControl, FormControlProps, FormErrorMessage, FormHelperText, FormLabel, Collapse} from '@chakra-ui/react'
 
 type FieldProps = {
   id: string
