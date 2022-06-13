@@ -14,7 +14,7 @@ const signIn =
   async (email: string, password: string): Promise<Result<UserCredential>> => {
     try {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password)
-
+      console.log('userCredentials: ', userCredentials)
       if (!userCredentials) {
         return [ErrUnauthenticated]
       }
@@ -50,7 +50,7 @@ const signOut = (auth: Auth) => async (): Promise<[Error | undefined]> => {
   }
 }
 
-type NewAuthFactoryResult = {
+export type NewAuthFactoryResult = {
   queries: {
     signIn: ReturnType<typeof signIn>
     signUp: ReturnType<typeof signUp>

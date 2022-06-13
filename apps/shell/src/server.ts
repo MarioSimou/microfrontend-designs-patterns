@@ -14,7 +14,9 @@ const pino = pinoHTTP({
 
 const tailor = new Tailor({
   templatesPath: pagesPath,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fetchTemplate: fetchTemplate as any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   requestFragment: requestFragment as any,
 })
 

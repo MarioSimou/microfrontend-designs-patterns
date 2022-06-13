@@ -3,15 +3,15 @@ import {AppProps} from 'next/app'
 import {ChakraProvider} from '@chakra-ui/react'
 import {SWRConfig} from 'swr'
 import {MainLayout, NavbarLink} from '@features/components'
-import {getSignInURL} from '@features/configuration'
+import {getPostsBaseURL} from '@features/configuration'
 
 const App = ({Component, pageProps}: AppProps) => {
-  const signInURL = getSignInURL()
+  const postsBaseURL = getPostsBaseURL()
 
   const navbarLinks: NavbarLink[] = [
-    {text: 'Posts', href: '/posts'},
-    {text: 'New Post', href: '/posts/new'},
-    {text: 'Sign In' , href: signInURL},
+    {text: 'Posts', href: `${postsBaseURL}/posts`},
+    {text: 'New Post', href: `${postsBaseURL}/posts/new`},
+    {text: 'Sign In' , href: '/sign-in'},
   ]
 
   return (

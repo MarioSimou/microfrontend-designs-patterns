@@ -9,6 +9,7 @@ export const getStaticProps: GetStaticProps<GetStaticPropsResult, {postId: strin
   const {firestore} = newFirebaseFactory()
 
   const [getPostError, post] = await firestore.queries.getPost(postId as string)
+
   if (getPostError) {
     if (ErrDocsNotFound === getPostError) {
       return {notFound: true}

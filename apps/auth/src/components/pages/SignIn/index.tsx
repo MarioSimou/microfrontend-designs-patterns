@@ -1,10 +1,14 @@
 import React from 'react'
 import {VStack, Flex, Input, Button, Heading, Text, Link as ChakraLink, useToast} from '@chakra-ui/react'
-import {Field} from 'src/features/components'
-import {useFormValues} from 'src/features/hooks'
-import {Link} from 'react-router-dom'
+import {Field} from '@features/components'
+import {useFormValues, useAuth} from '@features/hooks'
+import {getPostsBaseURL} from 'src/features/configuration'
+import Link from 'next/link'
+import {useRouter} from 'next/router'
 
 const SignIn: React.FC = () => {
+  const router = useRouter()
+  const {signIn} = useAuth()
   const toast = useToast({
     title: 'Authentication',
     position: 'bottom-right',
@@ -15,6 +19,7 @@ const SignIn: React.FC = () => {
     email: '',
     password: '',
   })
+  const postsBaseURL = getPostsBaseURL()
 
   const onClickSignIn = async () => {
     const {email, password} = formValues
@@ -25,8 +30,11 @@ const SignIn: React.FC = () => {
       return toast({description: 'Please fill all fields'})
     }
 
-    console.log('sign in')
-    // await signIn(email.value, password.value)
+    const [signInError] = await signIn(email.value, password.value)
+    if (signInError) {
+      return toast({description: signInError.message})
+    }
+    return router.push(`${postsBaseURL}/posts`)
   }
 
   return (
@@ -35,10 +43,13 @@ const SignIn: React.FC = () => {
         <VStack alignItems="flex-start" spacing="1.5rem">
           <Heading as="h1">Hey, welcome back</Heading>
           <Flex columnGap="0.5rem">
-            <Text>Still don't have an account?</Text>
-            <ChakraLink textDecoration="underline" color="teal.500" to="/sign-up" as={Link}>
+            <Text>Still do not have an account?</Text>
+            <Link href="/sign-up" passHref>
+            <ChakraLink textDecoration="underline" color="teal.500">
               Register now
             </ChakraLink>
+            </Link>
+            
           </Flex>
           <Text color="gray.600" fontSize="0.9rem" w="430px">
             Our goal is to deliver the best experience for you. We are always looking for new ways to improve our
@@ -62,6 +73,7 @@ const SignIn: React.FC = () => {
               touched={formValues.password.touched}>
               <Input
                 type="password"
+                autoComplete="password"
                 placeholder="Your password"
                 value={formValues.password.value}
                 onChange={handleOnChange}
@@ -73,14 +85,6 @@ const SignIn: React.FC = () => {
             Sign in
           </Button>
         </Flex>
-        <VStack alignItems="flex-end">
-          <Flex columnGap="0.5rem">
-            <Text>Forgot your password?</Text>
-            <ChakraLink as={Link} textDecoration="underline" color="teal.500" to="/forgot-password">
-              Reset it
-            </ChakraLink>
-          </Flex>
-        </VStack>
       </Flex>
     </VStack>
   )

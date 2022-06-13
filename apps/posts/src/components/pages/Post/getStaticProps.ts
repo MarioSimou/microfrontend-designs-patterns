@@ -3,18 +3,25 @@ import type {Post, ServerProps} from '@types'
 import {newFirebaseFactory, ErrDocsNotFound} from '@features/firebase'
 
 export const getStaticPaths: GetStaticPaths<{postId: string}> = async () => {
-  const {firestore} = newFirebaseFactory()
-  const [getPostsError, posts] = await firestore.queries.getPosts()
+  try {
+    const {firestore} = newFirebaseFactory()
+    const [getPostsError, posts] = await firestore.queries.getPosts()
 
-  if (getPostsError) {
-    throw getPostsError
-  }
+    if (getPostsError) {
+      throw getPostsError
+    }
 
-  const paths = posts.map(({id}) => ({params: {postId: id}}))
+    const paths = posts.map(({id}) => ({params: {postId: id}}))
 
-  return {
-    paths,
-    fallback: true,
+    return {
+      paths,
+      fallback: true,
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error('error: ', e.message)
+    }
+    throw e
   }
 }
 

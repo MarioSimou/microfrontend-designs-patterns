@@ -3,7 +3,7 @@ import {production} from './production'
 
 export * from './selectors'
 export const getConfig = () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NEXT_PUBLIC_ENV_CONFIG === 'development') {
     return development
   }
 

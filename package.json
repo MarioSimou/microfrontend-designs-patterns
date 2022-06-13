@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "lint": "turbo run lint --parallel",
     "build": "turbo run build",
     "start:dev": "turbo run start:dev --parallel",
     "start:prod": "turbo run start:prod --parallel",

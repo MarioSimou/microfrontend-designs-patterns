@@ -19,11 +19,10 @@ const EditPost: NextPage<EditPostProps> = ({post}) => {
     status: 'error',
   })
   const {formValues, handleOnBlur, handleOnChange} = useFormValues({
-    title: post.title,
-    html: post.html,
-    createdAt: post.createdAt,
+    title: post?.title,
+    html: post?.html,
+    createdAt: post?.createdAt,
   })
-
   const {putPost} = usePosts()
 
   const onSubmitForm = async () => {
@@ -47,6 +46,10 @@ const EditPost: NextPage<EditPostProps> = ({post}) => {
 
     router.push('/posts')
     return toast({description: 'Post created', status: 'success'})
+  }
+
+  if(router.isFallback){
+    return null
   }
 
   return (

@@ -30,7 +30,7 @@ const Post: NextPage<PostProps> = ({cacheKey, postId}) => {
 
     router.push('/posts')
     return toast({description: 'Post deleted', status: 'success'})
-  }, [toast, deletePost, postId, router.push])
+  }, [toast, deletePost, postId, router])
 
   if (!post) {
     return null

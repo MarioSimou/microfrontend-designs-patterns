@@ -10,7 +10,7 @@ const getApplicationTemplate = (req: Request): string => {
     case /^\/posts(\/.+)?$/.test(req.url): {
       return 'posts.html'
     }
-    case /\/sign-in$/.test(req.url): {
+    case /\/sign-(in|up)$/.test(req.url): {
       return 'auth.html'
     }
   }

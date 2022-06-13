@@ -9,7 +9,7 @@ import {ErrDocsNotFound} from '@features/firebase'
 
 export type PostsProps = PageProps<{}, GetStaticPropsResult>
 
-const Posts: NextPage<PostsProps> = ({cacheKey}) => {
+const Posts: NextPage<PostsProps> = ({cacheKey = '/posts'}) => {
   const {getPosts} = usePosts()
   const {data: posts, error} = useSWR(cacheKey, getPosts)
 
@@ -22,7 +22,7 @@ const Posts: NextPage<PostsProps> = ({cacheKey}) => {
   return (
     <VStack alignItems="flex-start" mt="2rem">
       <Collapse in={!arePosts}>
-        <Text>Currently there aren't any posts available</Text>
+        <Text>Currently there are not any posts available</Text>
       </Collapse>
       <Collapse in={arePosts} style={{width: '100%'}}>
         <Grid flexDirection="column" gridGap="1rem" w="100%">

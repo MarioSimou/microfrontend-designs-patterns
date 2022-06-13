@@ -12,7 +12,7 @@ const getApplicationName = (pathName: string): Maybe<Application> => {
     case /\/posts(\/.+)?$/.test(pathName): {
       return 'posts'
     }
-    case /\/sign-in/.test(pathName): {
+    case /\/sign-(in|up)$/.test(pathName): {
       return 'auth'
     }
     default: {
@@ -57,6 +57,7 @@ const requestFragment = (_: string, __: FragmentAttributes, req: Request): Promi
         if (res.statusCode !== 200) {
           return reject('error')
         }
+
         return resolve(res)
       })
       fragmentRequest.on('error', reject)

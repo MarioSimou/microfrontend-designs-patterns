@@ -1,7 +1,6 @@
 import React from 'react'
 import {Flex, Link as ChakraLink, Text, Grid} from '@chakra-ui/react'
 import Link, {LinkProps} from 'next/link'
-import {getSignInURL} from '@features/configuration'
 
 type NavbarLinkProps = LinkProps & {children: JSX.Element}
 
@@ -15,12 +14,27 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({children, ...rest}) => {
   )
 }
 
-export const Navbar: React.FC = () => {
-  const signInURL = getSignInURL()
+export type NavbarLink = {
+  href:string
+  text: string
+}
+
+type NavbarProps = {
+  links: NavbarLink[]
+}
+
+export const Navbar: React.FC<NavbarProps> = ({links}) => {
   return (
     <Flex as="nav" p="0rem 1rem" bgColor="teal.500" justifyContent="flex-end" alignItems="center">
       <Flex color="teal.100" textAlign="center">
-        <NavbarLink href="/posts">
+        {links.map(navbarLink => {
+          return (
+            <NavbarLink key={navbarLink.text} href={navbarLink.href}>
+              <Text>{navbarLink.text}</Text>
+            </NavbarLink>  
+          )
+        })}
+        {/* <NavbarLink href="/posts">
           <Text>Posts</Text>
         </NavbarLink>
         <NavbarLink href="/posts/new">
@@ -28,7 +42,7 @@ export const Navbar: React.FC = () => {
         </NavbarLink>
         <NavbarLink href={signInURL}>
           <Text>Sign In</Text>
-        </NavbarLink>
+        </NavbarLink> */}
       </Flex>
     </Flex>
   )
