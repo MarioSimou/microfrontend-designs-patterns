@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   UserCredential,
   signOut as firebaseSignOut,
+  signInWithCustomToken,
 } from 'firebase/auth'
 import type {Result} from '@types'
 
@@ -14,7 +15,6 @@ const signIn =
   async (email: string, password: string): Promise<Result<UserCredential>> => {
     try {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password)
-      console.log('userCredentials: ', userCredentials)
       if (!userCredentials) {
         return [ErrUnauthenticated]
       }

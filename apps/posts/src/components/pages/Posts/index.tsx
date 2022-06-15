@@ -3,11 +3,11 @@ import useSWR from 'swr'
 import {usePosts} from '@features/hooks'
 import type {NextPage} from 'next'
 import type {PageProps} from '@types'
-import type {GetStaticPropsResult} from './getStaticProps'
+import type {GetServerSidePropsResult} from './getServerSideProps'
 import {PostCard} from '@features/components'
 import {ErrDocsNotFound} from '@features/firebase'
 
-export type PostsProps = PageProps<{}, GetStaticPropsResult>
+export type PostsProps = PageProps<{}, GetServerSidePropsResult>
 
 const Posts: NextPage<PostsProps> = ({cacheKey = '/posts'}) => {
   const {getPosts} = usePosts()

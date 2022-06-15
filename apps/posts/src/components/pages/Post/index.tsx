@@ -4,12 +4,12 @@ import useSWR from 'swr'
 import {usePosts} from '@features/hooks'
 import {Post, PageProps} from '@types'
 import {NextPage} from 'next'
-import type {GetStaticPropsResult} from './getStaticProps'
+import type {GetServerSidePropsResult} from './getServerSideProps'
 import {formatDate} from '@features/utils'
 import {useRouter} from 'next/router'
 import Link from 'next/link'
 
-export type PostProps = PageProps<{}, GetStaticPropsResult>
+export type PostProps = PageProps<{}, GetServerSidePropsResult>
 
 const Post: NextPage<PostProps> = ({cacheKey, postId}) => {
   const {getPost, deletePost} = usePosts()

@@ -1,14 +1,19 @@
-import type {Nullable} from 'lib/types'
+import type {Nullable, User} from 'lib/types'
 
 export * from 'lib/types'
 
-type Data = Record<string, unknown>
+type AnyData = Record<string, unknown>
 type Fallback = Record<string, unknown>
+type DefaultData = {
+  user: User
+}
 
-export type ServerProps<TData extends Data, TFallback extends Nullable<Fallback> = null> = TFallback extends Fallback
-  ? TData & Fallback & {cacheKey: string}
-  : TData
+export type ServerProps<
+  TData extends AnyData = AnyData,
+  TFallback extends Nullable<Fallback> = null
+> = TFallback extends Fallback ? TData & Fallback & {cacheKey: string} & DefaultData : TData & DefaultData
 
-export type PageProps<TData extends Data = {}, ServerData extends Nullable<Data> = null> = ServerData extends Data
-  ? TData & ServerData
-  : TData
+export type PageProps<
+  TData extends AnyData = AnyData,
+  ServerData extends Nullable<AnyData> = null
+> = ServerData extends AnyData ? TData & ServerData & DefaultData : TData & DefaultData

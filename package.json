@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "clean": "turbo run clean --parallel && rm -rf node_modules",
     "lint": "turbo run lint --parallel",
     "build": "turbo run build",
-    "start:dev": "turbo run start:dev --parallel",
+    "start:dev": "ENV_CONFIG=complete turbo run start:dev --parallel",
     "start:prod": "turbo run start:prod --parallel",
-    "prettier:format": "prettier --write \"**/*.{ts,tsx,js,html,md}\""
+    "prettier:format": "prettier --write \"**/*.{ts,tsx,js,html,md}\"",
+    "docker:build": "docker-compose build base && turbo run docker:build --parallel"
   },
   "devDependencies": {
     "prettier": "latest",

@@ -1,11 +1,18 @@
 import {development} from './development'
 import {production} from './production'
+import {complete} from './complete'
 
 export * from './selectors'
 export const getConfig = () => {
-  if (process.env.NEXT_PUBLIC_ENV_CONFIG === 'development') {
-    return development
+  switch (process.env.ENV_CONFIG) {
+    case 'development': {
+      return development
+    }
+    case 'complete': {
+      return complete
+    }
+    default: {
+      return production
+    }
   }
-
-  return production
 }

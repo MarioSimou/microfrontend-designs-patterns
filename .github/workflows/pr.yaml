@@ -1,0 +1,66 @@
+name: PR Pipeline
+on:
+pull_request:
+  branches:
+    - master
+
+env:
+  NODE_VERSION: lts/gallium
+  BASE_OS: ubuntu-20.04
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ${{ env.BASE_OS }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm install -g pnpm
+          pnpm i 
+
+      - name: Linting
+        run: pnpm lint 
+        
+  build:
+    name: Build
+    runs-on: ${{ env.BASE_OS }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm install -g pnpm
+          pnpm i 
+
+      - name: Build
+        run: pnpm build
+
+  docker-build:
+    name: Docker Build
+    runs-on: ${{ env.BASE_OS }}
+    timeout-minuteS: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          ./ci/scripts/install-docker-compose.sh
+
+          npm i --location=global pnpm
+          pnpm i
+
+      - name: Build Images
+        run: pnpm docker:build

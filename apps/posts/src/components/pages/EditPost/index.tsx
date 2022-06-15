@@ -1,14 +1,13 @@
 import {Flex, useToast, Button, Heading, VStack, Textarea, Input} from '@chakra-ui/react'
 import {Field} from '@features/components'
 import {useFormValues, usePosts} from '@features/hooks'
-import {v4 as uuid} from 'uuid'
 import {useRouter} from 'next/router'
 import {formatDate} from '@features/utils'
 import {PageProps} from '@types'
-import type {GetStaticPropsResult} from './getStaticProps'
+import type {GetServerSidePropsResult} from './getServerSideProps'
 import type {NextPage} from 'next'
 
-type EditPostProps = PageProps<{}, GetStaticPropsResult>
+type EditPostProps = PageProps<{}, GetServerSidePropsResult>
 
 const EditPost: NextPage<EditPostProps> = ({post}) => {
   const router = useRouter()

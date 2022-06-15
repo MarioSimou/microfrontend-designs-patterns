@@ -2,12 +2,14 @@ import React from 'react'
 import {VStack, Flex, Input, Button, Heading, Text, Link as ChakraLink, useToast} from '@chakra-ui/react'
 import {Field} from '@features/components'
 import {useFormValues, useAuth} from '@features/hooks'
-import {getPostsBaseURL} from 'src/features/configuration'
+import {getPostsBaseURL, getCookieDomain} from 'src/features/configuration'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
+import {useCookie} from 'react-use'
 
 const SignIn: React.FC = () => {
   const router = useRouter()
+  const [_, setSessionId] = useCookie('sessionId')
   const {signIn} = useAuth()
   const toast = useToast({
     title: 'Authentication',
@@ -20,6 +22,7 @@ const SignIn: React.FC = () => {
     password: '',
   })
   const postsBaseURL = getPostsBaseURL()
+  const cookieDomain = getCookieDomain()
 
   const onClickSignIn = async () => {
     const {email, password} = formValues
@@ -30,10 +33,13 @@ const SignIn: React.FC = () => {
       return toast({description: 'Please fill all fields'})
     }
 
-    const [signInError] = await signIn(email.value, password.value)
+    const [signInError, user] = await signIn(email.value, password.value)
     if (signInError) {
       return toast({description: signInError.message})
     }
+    const token= await user.user.getIdToken()
+    setSessionId(token, {domain: cookieDomain})
+    toast({description: 'Successful login', status: 'success'})
     return router.push(`${postsBaseURL}/posts`)
   }
 

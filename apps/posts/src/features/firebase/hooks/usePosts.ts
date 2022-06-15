@@ -15,16 +15,19 @@ export const usePosts = () => {
     }
 
     return posts
-  }, [])
+  }, [firestore.queries])
 
-  const getPost = React.useCallback(async (id: Post['id']): Promise<Post> => {
-    const [e, post] = await firestore.queries.getPost(id)
-    if (e) {
-      throw e
-    }
+  const getPost = React.useCallback(
+    async (id: Post['id']): Promise<Post> => {
+      const [e, post] = await firestore.queries.getPost(id)
+      if (e) {
+        throw e
+      }
 
-    return post
-  }, [])
+      return post
+    },
+    [firestore.queries]
+  )
 
   return {
     getPosts,

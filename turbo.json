@@ -1,6 +1,12 @@
 {
   "pipeline": {
+    "clean": {
+      "outputs": []
+    },
     "lint": {
+      "outputs": []
+    },
+    "docker:build": {
       "outputs": []
     },
     "build": {
@@ -11,7 +17,6 @@
       "cache": false
     },
     "start:prod": {
-      "dependsOn": ["build"],
       "outputs": []
     }
   }

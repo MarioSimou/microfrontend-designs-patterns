@@ -7,3 +7,20 @@ export type Post = {
   createdAt: string
   updatedAt: string
 }
+
+export type HTTPResponse<TData> = {
+  status: number
+  success: boolean
+  message?: string
+  data?: TData
+}
+
+export type User = {
+  email?: string
+  exp: number
+  iat: number
+  sub: string
+  aud: string
+  iss: string
+  uid: string
+}

@@ -1,2 +1,2 @@
 export {default} from '@components/pages/Posts'
-export {getStaticProps} from '@components/pages/Posts/getStaticProps'
+export {getServerSideProps} from '@components/pages/Posts/getServerSideProps'

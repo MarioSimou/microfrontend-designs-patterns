@@ -6,7 +6,8 @@
       "@types": ["./src/types/index.ts"],
       "@features/*": ["./src/features/*"],
       "@components/*": ["./src/components/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "./global.d.ts"],
   "exclude": ["node_modules"]

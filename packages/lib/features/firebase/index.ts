@@ -38,12 +38,12 @@ export const newFirebaseFactory = (): NewFirebaseFactoryResult => {
   }
 
   app = initializeApp({
-    apiKey: 'AIzaSyARS17qOFYGCay9XIYImbhnyJUM3tinQzY',
-    authDomain: 'microfrontends-design-pa-b3d23.firebaseapp.com',
-    projectId: 'microfrontends-design-pa-b3d23',
-    storageBucket: 'microfrontends-design-pa-b3d23.appspot.com',
-    messagingSenderId: '842500981886',
-    appId: '1:842500981886:web:30b9638e360fefe0d6442f',
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
   })
   firestore = initializeFirestore(app, {})
   auth = initializeAuth(app)

@@ -1,3 +1,4 @@
 export const production = {
-  signInUrl: 'http://localhost:3000/sign-in',
+  signInBaseURL: 'http://auth.posts.com.cy:3002',
+  cookieDomain: '.posts.com.cy',
 } as const

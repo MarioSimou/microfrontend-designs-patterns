@@ -2,8 +2,9 @@ import express from 'express'
 import Tailor from 'node-tailor'
 import fetchTemplate from './fetchTemplate'
 import requestFragment from './requestFragment'
-import {getPath} from './utils'
+import {getPath, getApplicationBaseURL, getApplicationName} from './utils'
 import pinoHTTP from 'pino-http'
+import {URL} from 'node:url'
 
 const port = process.env.PORT ?? 3000
 const server = express()
@@ -20,6 +21,13 @@ const tailor = new Tailor({
   requestFragment: requestFragment as any,
 })
 
+server.all('/api/v1/*', (req, res) => {
+  const appName = getApplicationName(req.path)
+  const appBaseURL = getApplicationBaseURL(appName)
+
+  const url = new URL(req.path, appBaseURL)
+  return res.redirect(307, url.href)
+})
 server.use(pino)
 server.use('/public', express.static(pagesPath))
 server.use(tailor.requestHandler)
