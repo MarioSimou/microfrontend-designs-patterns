@@ -11,13 +11,13 @@ networks:
 
 services:
   base:
-    image: mariossimou.dev/base:prod
+    image: speakyourownideas/base:prod
     build:
       context: .
       dockerfile: ./Dockerfile
 
   auth:
-    image: mariossimou.dev/auth:prod
+    image: speakyourownideas/auth:prod
     container_name: microfrontends_auth
     build:
       context: ./apps/auth
@@ -27,14 +27,14 @@ services:
     # env_file:
     #   ./apps/auth/.env.development
     extra_hosts:
-      - "auth.posts.com.cy:127.0.0.1"
-      - "posts.com.cy:172.168.0.3"
+      - "auth.speakyourownideas.com:127.0.0.1"
+      - "posts.speakyourownideas.com:172.168.0.3"
     networks:
       microfrontends_network:
         ipv4_address: "172.168.0.2"
 
   posts:
-    image: mariossimou.dev/posts:prod
+    image: speakyourownideas/posts:prod
     container_name: microfrontends_posts
     build:
       context: ./apps/posts
@@ -44,14 +44,14 @@ services:
     # env_file:
     #   ./apps/posts/.env.development
     extra_hosts:
-      - "posts.com.cy:127.0.0.1"
-      - "auth.posts.com.cy:172.168.0.2"
+      - "posts.speakyourownideas.com:127.0.0.1"
+      - "auth.speakyourownideas.com:172.168.0.2"
     networks:
       microfrontends_network:
         ipv4_address: "172.168.0.3"
 
   shell:
-    image: mariossimou.dev/shell:prod
+    image: speakyourownideas/shell:prod
     container_name: microfrontends_shell
     build:
       context: ./apps/shell
@@ -61,8 +61,8 @@ services:
     # env_file:
     #   ./apps/shell/.env.development
     extra_hosts:
-      - "auth.posts.com.cy:172.168.0.2"
-      - "posts.com.cy:172.168.0.3"
+      - "auth.speakyourownideas.com:172.168.0.2"
+      - "posts.speakyourownideas.com:172.168.0.3"
     networks:
       microfrontends_network:
         ipv4_address: "172.168.0.4"

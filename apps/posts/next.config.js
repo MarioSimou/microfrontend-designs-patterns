@@ -2,7 +2,7 @@ const withTM = require('next-transpile-modules')(['lib'])
 
 module.exports = withTM({
   reactStrictMode: true,
-  assetPrefix: 'http://posts.com.cy:3001',
+  assetPrefix: process.env.WEB_APP_BASE_URL,
   eslint: {
     ignoreDuringBuilds: true,
   },

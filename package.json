@@ -9,7 +9,12 @@
     "start:dev": "ENV_CONFIG=complete turbo run start:dev --parallel",
     "start:prod": "turbo run start:prod --parallel",
     "prettier:format": "prettier --write \"**/*.{ts,tsx,js,html,md}\"",
-    "docker:build": "docker-compose build base && turbo run docker:build --parallel"
+    "docker:build": "docker-compose build base && turbo run docker:build --parallel",
+    "infra:plan": "/usr/bin/terraform -chdir=infrastructure plan",
+    "infra:apply": "/usr/bin/terraform -chdir=infrastructure apply --auto-approve",
+    "infra:destroy": "/usr/bin/terraform -chdir=infrastructure destroy",
+    "infra:format": "/usr/bin/terraform -chdir=infrastructure fmt",
+    "infra:upload:env": "./infrastructure/scripts/upload-services-env.sh speakyourownideas"
   },
   "devDependencies": {
     "prettier": "latest",

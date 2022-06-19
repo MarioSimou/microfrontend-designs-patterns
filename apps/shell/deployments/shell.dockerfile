@@ -1,4 +1,4 @@
-FROM mariossimou.dev/base:prod
+FROM speakyourownideas/base:prod
 
 WORKDIR /repository/apps/shell
 COPY . .

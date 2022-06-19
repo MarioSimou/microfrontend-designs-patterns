@@ -21,6 +21,10 @@ const tailor = new Tailor({
   requestFragment: requestFragment as any,
 })
 
+server.get('/ping', (req, res) => {
+  return res.end('pong')
+})
+
 server.all('/api/v1/*', (req, res) => {
   const appName = getApplicationName(req.path)
   const appBaseURL = getApplicationBaseURL(appName)

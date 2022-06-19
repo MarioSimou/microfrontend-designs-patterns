@@ -33,7 +33,7 @@ const requestFragment = (_: string, __: FragmentAttributes, req: Request): Promi
         path: pathname,
       }
 
-      const fragmentRequest = req.secure ? https.request(options) : http.request(options)
+      const fragmentRequest = protocol === 'http:' ? http.request(options) : https.request(options)
       fragmentRequest.on('response', (res: Response) => {
         if (res.statusCode >= 400) {
           return reject('error')

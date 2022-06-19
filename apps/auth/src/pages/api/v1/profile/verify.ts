@@ -1,21 +1,16 @@
-import {NextApiRequest, NextApiResponse} from 'next'
 import Joi, {Schema} from 'joi'
 import {newFirebaseAdmin} from '@features/firebase'
-import type {HTTPResponse} from '@types'
+import type {HTTPResponse, APIHandler} from '@types'
 
 type StatusCode = number
 const StatusMethodNotAllowed: StatusCode = 405
 const StatusOK: StatusCode = 200
 const StatusBadRequest: StatusCode = 400
-const StatusUnauthorized: StatusCode = 401
-const StatusForbidden: StatusCode = 403
+// const StatusUnauthorized: StatusCode = 401
+// const StatusForbidden: StatusCode = 403
 const StatusInternalServerError: StatusCode = 500
 
 const ErrMethodNotAllowed = new Error('error: method not allowed')
-
-interface Request<TBody> extends NextApiRequest {
-  body: TBody
-}
 
 const newResponse = <TData = unknown>(status: StatusCode, data: TData): HTTPResponse<TData> => {
   if (status >= StatusBadRequest) {
@@ -44,12 +39,6 @@ const newResponse = <TData = unknown>(status: StatusCode, data: TData): HTTPResp
     data,
   }
 }
-
-type RequestBody = Record<string, unknown>
-type APIHandler<TData = unknown, TBody extends RequestBody = RequestBody> = (
-  req: Request<TBody>,
-  res: NextApiResponse<TData>
-) => Promise<void>
 
 type BodySchema = {
   token: string

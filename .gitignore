@@ -29,7 +29,6 @@ yarn-error.log*
 
 # firebase-admin cert
 firebase-cert.json
-.dockerignore
 
 # turbo
 .turbo
@@ -37,3 +36,7 @@ firebase-cert.json
 tsconfig.tsbuildinfo
 apps/**/dist
 apps/**/firebase-debug.log
+
+terraform.tfstate
+terraform.tfstate.*
+.terraform/

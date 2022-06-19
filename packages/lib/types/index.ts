@@ -1,3 +1,5 @@
+import type {NextApiRequest, NextApiResponse} from 'next'
+
 export type Nullable<TData> = null | TData
 export type Result<TData> = [Error] | [undefined, TData]
 export type Post = {
@@ -24,3 +26,13 @@ export type User = {
   iss: string
   uid: string
 }
+
+export interface Request<TBody> extends NextApiRequest {
+  body: TBody
+}
+
+export type RequestBody = Record<string, unknown>
+export type APIHandler<TData = unknown, TBody extends RequestBody = RequestBody> = (
+  req: Request<TBody>,
+  res: NextApiResponse<TData>
+) => Promise<void>

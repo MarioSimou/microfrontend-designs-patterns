@@ -1,4 +1,4 @@
 export const development = {
-  postsBaseURL: 'http://posts.com.cy:3001',
-  cookieDomain: '.posts.com.cy',
+  postsBaseURL: 'http://localhost.posts.speakyourownideas.com:3001',
+  cookieDomain: '.speakyourownideas.com',
 } as const

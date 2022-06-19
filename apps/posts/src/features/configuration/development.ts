@@ -1,4 +1,4 @@
 export const development = {
-  signInBaseURL: 'http://auth.posts.com.cy:3002',
-  cookieDomain: '.posts.com.cy',
+  signInBaseURL: 'http://localhost.auth.speakyourownideas.com:3002',
+  cookieDomain: '.speakyourownideas.com',
 } as const

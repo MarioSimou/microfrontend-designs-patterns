@@ -1,4 +1,4 @@
-FROM mariossimou.dev/base:prod
+FROM speakyourownideas/base:prod
 
 ENV ENV_CONFIG=production
 
