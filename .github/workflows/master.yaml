@@ -1,46 +1,83 @@
 name: PR Pipeline
 on:
-pull_request:
-  branches:
-    - master
+  push:
+    branches:
+      - tailor-js-server-side-composition-vertical-split
 
 env:
-NODE_VERSION: lts/gallium
-BASE_OS: ubuntu-20.04
+  NODE_VERSION: lts/gallium
+  POSTS_WEB_APP_BASE_URL: https://posts.speakyourownideas.com
+  AUTH_WEB_APP_BASE_URL: https://auth.speakyourownideas.com
+  SHELL_APPLICATION_BASE_URL: https://speakyourownideas.com
+  ENV_CONFIG: production
+  FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+  FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+  FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+  FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+  FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+  FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+  FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
+  FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
 jobs:
-lint:
-  name: Linting
-  runs-on: ${{ env.BASE_OS }}
-  timeout-minutes: 10
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
+  lint:
+    name: Lint
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    - name: Install Dependencies
-      run: |
-        npm install -g pnpm
-        pnpm i 
+      - name: Install Dependencies
+        run: |
+          npm install -g pnpm
+          pnpm i 
 
-    - name: Linting
-      run: pnpm lint 
-      
-build:
-  name: Build
-  runs-on: ${{ env.BASE_OS }}
-  timeout-minutes: 10
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
+      - name: Linting
+        run: pnpm lint 
+        
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    - name: Install Dependencies
-      run: |
-        npm install -g pnpm
-        pnpm i 
+      - name: Install Dependencies
+        run: |
+          npm install -g pnpm
+          pnpm i 
 
-    - name: Build
-      run: pnpm build
+      - name: Create environment variable files
+        run: ./ci/scripts/create-env-files.sh
+
+      - name: Build
+        run: pnpm build
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          ./ci/scripts/install-docker-compose.sh
+
+          npm i --location=global pnpm
+          pnpm i
+
+      - name: Create environment variable files
+        run: ./ci/scripts/create-env-files.sh
+
+      - name: Build Images
+        run: pnpm docker:build

@@ -20,24 +20,74 @@ Goal of this this exercise is to implement a microfrontend architecture using ta
 ### Setup
 
 1. Update your hosts file (/etc/hosts) so it can resolve `localhost.posts.speakyourownideas.com`, `localhost.auth.speakyourownideas.com` and `localhost.speakyourownideas.com` domains
-````
+```bash
 127.0.0.1   localhost.posts.speakyourownideas.com localhost.auth.speakyourownideas.com localhost.speakyourownideas.com
 ```
 
 2. Install node modules. Please make sure that you are on the right node version and use [pnpm](https://pnpm.io/)
-```
+```bash
 // if pnpm is not installed run npm install -g pnpm
 
 nvm use
 pnpm i
 ```
 
-### CI/CD
+### Run pipeline locally
 
 The repository runs on Github Actions which you can learn more [here](https://docs.github.com/en/actions) 
 You can also use [nektos/act](https://github.com/nektos/act) to run your pipeline locally.
 
-```
+```bash
 act -j [jobName] pull_request
 act -j [jobName] push
+```
+
+### Dynamically generate .env.production files
+1. Export below environment variables
+```bash
+export ENV_CONFIG=production
+export FIREBASE_API_KEY=[value]
+export FIREBASE_AUTH_DOMAIN=[value]
+export FIREBASE_PROJECT_ID=[value]
+export FIREBASE_STORAGE_BUCKET=[value]
+export FIREBASE_MESSAGING_SENDER_ID=[value]
+export FIREBASE_APP_ID=[value]
+export FIREBASE_ADMIN_CLIENT_EMAIL=[value]
+export FIREBASE_ADMIN_PRIVATE_KEY=[value]
+export POSTS_WEB_APP_BASE_URL=https://posts.speakyourownideas.com
+export AUTH_WEB_APP_BASE_URL=https://auth.speakyourownideas.com
+export SHELL_APPLICATION_BASE_URL=https://speakyourownideas.com
+```
+
+2. Run script to generate files
+
+```bash
+./ci/scripts/create-env-files.sh
+```
+
+### Build Infrastructure - Deploy to AWS
+
+1. Initiate terraform configuration within the `infrastructure` directory
+```bash
+terraform init
+```
+
+2. Populate `terraform.tfvars` file
+```terraform
+env                    = "prod"
+domain_certificate_arn = [arn of the HTTPS certificate you created]
+```
+
+3. Build infrastructure
+
+```
+pnpm infra:apply
+```
+
+4. Generate `.env.production` files and upload them to s3 bucket. 
+```bash
+# Check section 'Dynamically generate .env.production files'
+./ci/scripts/create-env-files.sh
+
+pnpm infra:upload:env
 ```
