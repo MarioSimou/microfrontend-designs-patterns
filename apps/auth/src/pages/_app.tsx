@@ -14,9 +14,9 @@ const App = ({Component, pageProps}: AppProps) => {
 
   return (
     <ChakraProvider>
-        <MainLayout navbarLinks={navbarLinks}>
-          <Component {...pageProps} />
-        </MainLayout>
+      <MainLayout navbarLinks={navbarLinks}>
+        <Component {...pageProps} />
+      </MainLayout>
     </ChakraProvider>
   )
 }

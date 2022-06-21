@@ -37,7 +37,7 @@ const Post: NextPage<PostProps> = ({cacheKey, postId}) => {
   }
 
   return (
-    <VStack alignItems="flex-start" spacing="2rem">
+    <VStack alignItems="flex-start" spacing="2rem" p={['1rem', '1rem', '0']}>
       <Flex flexDir="column" rowGap="1rem" w="100%">
         <Heading>{post.title}</Heading>
         <Divider />
@@ -49,13 +49,20 @@ const Post: NextPage<PostProps> = ({cacheKey, postId}) => {
           <Text>Published at: {formatDate(post.updatedAt)}</Text>
         </VStack>
         <Divider />
-        <ButtonGroup colorScheme="teal" variant="outline" w="100%" gridGap="1rem" justifyContent="flex-end">
+        <ButtonGroup
+          colorScheme="teal"
+          variant="outline"
+          w="100%"
+          gridGap="1rem"
+          flexDirection={['column', 'column', 'row']}
+          justifyContent={['flex-start', 'flex-start', 'flex-end']}
+        >
           <Link href={`/posts/${postId}/edit`} passHref>
-            <Button as="a" w={['1rem', '1rem', '200px']}>
+            <Button as="a" w={['100%', '100%', '200px']}>
               Edit
             </Button>
           </Link>
-          <Button w={['1rem', '1rem', '200px']} onClick={onClickDelete}>
+          <Button ml="0 !important" w={['100%', '100%', '200px']} onClick={onClickDelete}>
             Delete
           </Button>
         </ButtonGroup>

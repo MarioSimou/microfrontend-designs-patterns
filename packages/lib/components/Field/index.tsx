@@ -33,7 +33,8 @@ export const Field: React.FC<FieldProps> = ({
       isDisabled={disabled}
       isReadOnly={readOnly}
       isRequired={required}
-      {...rest}>
+      {...rest}
+    >
       <FormLabel htmlFor={id}>{label}</FormLabel>
       {helper && <FormHelperText>{helper}</FormHelperText>}
       {children}

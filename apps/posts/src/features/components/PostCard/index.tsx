@@ -18,7 +18,6 @@ const variants: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    borderRadius: '0.5rem',
   },
   hovered: {
     scale: 0.95,
@@ -32,9 +31,18 @@ export const PostCard: React.FC<PostCardProps> = ({post}) => {
       style={{opacity: 0, scale: 0}}
       initial="hidden"
       whileInView="visible"
-      whileHover="hovered">
+      whileHover="hovered"
+    >
       <Link href={`/posts/${post.id}`}>
-        <Flex as="a" flexDir="column" p="1rem 1.25rem" w="100%" _hover={{cursor: 'pointer'}} bg="gray.200">
+        <Flex
+          as="a"
+          flexDir="column"
+          borderRadius="0.5rem"
+          p="1rem 1.25rem"
+          w="100%"
+          _hover={{cursor: 'pointer'}}
+          bg="gray.200"
+        >
           <Flex flexDir="column" rowGap="0.5rem">
             <Heading as="h2" fontSize="1.1rem" fontWeight={500}>
               {post.title}

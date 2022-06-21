@@ -17,8 +17,8 @@ const App = ({Component, pageProps, router}: AppProps<PageProps>) => {
   const navbarLinks: NavbarLink[] = [
     {text: 'Posts', href: '/posts', type: 'any'},
     {text: 'New Post', href: '/posts/new', type: 'any'},
-    {text: 'Sign In' , href: signInURL, type: 'sign-in'},
-    {text: 'Logout', type: 'sign-out', onClick: onClickLogout}
+    {text: 'Sign In', href: signInURL, type: 'sign-in'},
+    {text: 'Logout', type: 'sign-out', onClick: onClickLogout},
   ]
 
   return (

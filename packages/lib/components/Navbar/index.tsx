@@ -28,7 +28,7 @@ type PlainNavbarLink = {
 }
 
 export type NavbarLink = PlainNavbarLink | LogoutNavbarLink
-const isLogoutNavbarLink = (link: NavbarLink):  link is LogoutNavbarLink => {
+const isLogoutNavbarLink = (link: NavbarLink): link is LogoutNavbarLink => {
   return link.type === 'sign-out'
 }
 
@@ -42,21 +42,27 @@ export const Navbar: React.FC<NavbarProps> = ({links, user}) => {
     <Flex as="nav" p="0rem 1rem" bgColor="teal.500" justifyContent="flex-end" alignItems="center">
       <Flex color="teal.100" textAlign="center">
         {links.map(navbarLink => {
-          if(navbarLink.type === 'sign-in' && user){
+          if (navbarLink.type === 'sign-in' && user) {
             return null
           }
-          if(isLogoutNavbarLink(navbarLink)){
+          if (isLogoutNavbarLink(navbarLink)) {
             return (
-              <ChakraLink key={navbarLink.text} as="button" p="0.8rem 1rem" _hover={{textDecoration: 'none', bg: 'white', color: 'teal.500'}} onClick={navbarLink.onClick}>
+              <ChakraLink
+                key={navbarLink.text}
+                as="button"
+                p="0.8rem 1rem"
+                _hover={{textDecoration: 'none', bg: 'white', color: 'teal.500'}}
+                onClick={navbarLink.onClick}
+              >
                 {navbarLink.text}
-              </ChakraLink>     
+              </ChakraLink>
             )
           }
 
           return (
             <NavbarLink key={navbarLink.text} href={navbarLink.href}>
               <Text>{navbarLink.text}</Text>
-            </NavbarLink>  
+            </NavbarLink>
           )
         })}
       </Flex>

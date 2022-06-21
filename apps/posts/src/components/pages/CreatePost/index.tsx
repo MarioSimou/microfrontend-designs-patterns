@@ -1,4 +1,4 @@
-import {Flex, useToast, Button, Heading, Text, VStack, Textarea, Input} from '@chakra-ui/react'
+import {Flex, useToast, Button, Heading, VStack, Textarea, Input} from '@chakra-ui/react'
 import {Field} from '@features/components'
 import {useFormValues, usePosts} from '@features/hooks'
 import {v4 as uuid} from 'uuid'
@@ -51,13 +51,14 @@ const CreatePost = () => {
         Create Post
       </Heading>
       <VStack w="100%" p="1.5rem 0">
-        <Flex as="form" flexDirection="column" w="100%" rowGap="2em" p="2rem">
+        <Flex as="form" flexDirection="column" w="100%" rowGap="2em" p={['1rem', '1rem', '2rem']}>
           <Field
             id="title"
             touched={formValues.title.touched}
             error={formValues.title.error}
             label="Title:"
-            placeholder="Your title">
+            placeholder="Your title"
+          >
             <Input value={formValues.title.value} onChange={handleOnChange} onBlur={handleOnBlur} />
           </Field>
           <Field id="html" touched={formValues.html.touched} error={formValues.html.error} label="Description:">
@@ -74,7 +75,8 @@ const CreatePost = () => {
             touched={formValues.createdAt.touched}
             error={formValues.createdAt.error}
             disabled
-            label="Created At:">
+            label="Created At:"
+          >
             <Input defaultValue={formatDate(formValues.createdAt.value)} />
           </Field>
 

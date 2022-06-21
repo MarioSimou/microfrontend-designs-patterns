@@ -47,7 +47,7 @@ const EditPost: NextPage<EditPostProps> = ({post}) => {
     return toast({description: 'Post created', status: 'success'})
   }
 
-  if(router.isFallback){
+  if (router.isFallback) {
     return null
   }
 
@@ -57,13 +57,14 @@ const EditPost: NextPage<EditPostProps> = ({post}) => {
         Edit Post
       </Heading>
       <VStack w="100%" p="1.5rem 0">
-        <Flex as="form" flexDirection="column" w="100%" rowGap="2em" p="2rem">
+        <Flex as="form" flexDirection="column" w="100%" rowGap="2em" p={['1rem', '1rem', '2rem']}>
           <Field
             id="title"
             touched={formValues.title.touched}
             error={formValues.title.error}
             label="Title:"
-            placeholder="Your title">
+            placeholder="Your title"
+          >
             <Input value={formValues.title.value} onChange={handleOnChange} onBlur={handleOnBlur} />
           </Field>
           <Field id="html" touched={formValues.html.touched} error={formValues.html.error} label="Description:">
@@ -80,7 +81,8 @@ const EditPost: NextPage<EditPostProps> = ({post}) => {
             touched={formValues.createdAt.touched}
             error={formValues.createdAt.error}
             disabled
-            label="Created At:">
+            label="Created At:"
+          >
             <Input defaultValue={formatDate(formValues.createdAt.value)} />
           </Field>
 
