@@ -40,3 +40,8 @@ apps/**/firebase-debug.log
 terraform.tfstate
 terraform.tfstate.*
 .terraform/
+
+# act
+.secrets
+
+.github/workflows/test.yaml

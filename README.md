@@ -67,12 +67,14 @@ export SHELL_APPLICATION_BASE_URL=https://speakyourownideas.com
 
 ### Build Infrastructure - Deploy to AWS
 
-1. Initiate terraform configuration within the `infrastructure` directory
+1. Register a domain and create a certificate using the `Certificate Manager` service from AWS 
+
+2. Initiate terraform configuration within the `infrastructure` directory
 ```bash
 terraform init
 ```
 
-2. Populate `terraform.tfvars` file
+3. Populate `terraform.tfvars` file
 ```terraform
 env                    = "prod"
 domain_certificate_arn = [arn of the HTTPS certificate you created]
@@ -91,3 +93,7 @@ pnpm infra:apply
 
 pnpm infra:upload:env
 ```
+
+5. Update the hosted zone you created in Route53 so that the A records point to your load balancer
+
+6. Run master pipeline to deploy the apps

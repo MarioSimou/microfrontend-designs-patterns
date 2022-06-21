@@ -21,12 +21,20 @@ locals {
       protocol    = "tcp"
       rule_action = "allow"
     },
-    # {
-    #     rule_number = 90
-    #     egress = false
-    #     protocol = "-1"
-    #     rule_action = "deny"
-    # }
+    {
+        rule_number = 90
+        egress = false
+        protocol = "-1"
+        rule_action = "deny"
+    },
+    {
+      from_port = 1024
+      to_port = 65534
+      rule_number = 20
+      egress = false
+      protocol= "tcp"
+      rule_action = "allow"
+    },
     # egress
   ]
   services = [

@@ -1,0 +1,44 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "posts",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 3001,
+                    "hostPort": 3001,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::speakyourownideas-services-bucket/posts/production.env",
+                    "type": "s3"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "speakyourownideas",
+                    "awslogs-region": "eu-west-1",
+                    "awslogs-stream-prefix": "services"
+                }
+            }
+        }
+    ],
+    "family": "posts",
+    "executionRoleArn": "arn:aws:iam::059477470745:role/ecs-services-role",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024"
+}

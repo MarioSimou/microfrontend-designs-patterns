@@ -1,10 +1,12 @@
-name: PR Pipeline
+name: Master Pipeline
 on:
   push:
     branches:
       - tailor-js-server-side-composition-vertical-split
 
 env:
+  AWS_REGION: eu-west-1
+  AWS_ECS_CLUSTER: speakyourownideas-prod-cluster
   NODE_VERSION: lts/gallium
   POSTS_WEB_APP_BASE_URL: https://posts.speakyourownideas.com
   AUTH_WEB_APP_BASE_URL: https://auth.speakyourownideas.com
@@ -61,14 +63,28 @@ jobs:
 
   docker-build:
     name: Docker Build
+    needs: [lint, build]
     runs-on: ubuntu-20.04
-    timeout-minutes: 10
+    timeout-minutes: 15
+    outputs: 
+      shell-image: ${{ steps.build-images.outputs.shell-image}}
+      posts-image: ${{ steps.build-images.outputs.posts-image}}
+      auth-image: ${{ steps.build-images.outputs.auth-image}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
+        
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
+      - uses: aws-actions/amazon-ecr-login@v1
+        id: login-aws-ecr-registry
+        
       - name: Install Dependencies
         run: |
           ./ci/scripts/install-docker-compose.sh
@@ -79,5 +95,149 @@ jobs:
       - name: Create environment variable files
         run: ./ci/scripts/create-env-files.sh
 
-      - name: Build Images
-        run: pnpm docker:build
+      - name: Build images and push
+        id: build-images
+        env:
+          AWS_ECR_REGISTRY: ${{ steps.login-aws-ecr-registry.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          shell_image="speakyourownideas/shell:prod"
+          tagged_shell_image="speakyourownideas-prod-shell:${IMAGE_TAG}"
+
+          posts_image="speakyourownideas/posts:prod"
+          tagged_posts_image="speakyourownideas-prod-posts:${IMAGE_TAG}"
+          
+          auth_image="speakyourownideas/auth:prod"
+          tagged_auth_image="speakyourownideas-prod-auth:${IMAGE_TAG}"
+
+          function tag_and_push {
+            image=$1
+            tagged_image=$2
+
+            docker tag ${image} "${AWS_ECR_REGISTRY}/${tagged_image}" 
+            docker push "${AWS_ECR_REGISTRY}/${tagged_image}"
+          }
+          
+          pnpm docker:build
+
+          tag_and_push $shell_image $tagged_shell_image
+          tag_and_push $posts_image $tagged_posts_image
+          tag_and_push $auth_image $tagged_auth_image
+
+          echo "::set-output name=shell-image::${tagged_shell_image}"
+          echo "::set-output name=posts-image::${tagged_posts_image}"
+          echo "::set-output name=auth-image::${tagged_auth_image}"
+
+  shell-deployment:
+    name: Shell Deployment
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    needs: [docker-build]
+    env: 
+      SERVICE: shell
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: ${{ env.NODE_VERSION }}
+          
+        - uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - uses: aws-actions/amazon-ecr-login@v1
+          id: login-aws-ecr-registry
+
+        - name: Update task definition
+          uses: aws-actions/amazon-ecs-render-task-definition@v1
+          id: update-task-definition
+          with:
+            container-name: ${{ env.SERVICE }}
+            task-definition: ./apps/shell/deployments/taskDefinition.json
+            image: ${{ steps.login-aws-ecr-registry.outputs.registry }}/${{ needs.docker-build.outputs.shell-image }}
+
+        - name: Deploy Amazon ECS task definition
+          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+          with:
+            task-definition: ${{ steps.update-task-definition.outputs.task-definition }}
+            service: ${{ env.SERVICE }}
+            cluster: ${{ env.AWS_ECS_CLUSTER }}
+            wait-for-service-stability: false
+
+  posts-deployment:
+    name: Posts Deployment
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    needs: [docker-build]
+    env: 
+      SERVICE: posts
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: ${{ env.NODE_VERSION }}
+          
+        - uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - uses: aws-actions/amazon-ecr-login@v1
+          id: login-aws-ecr-registry
+
+        - name: Update task definition
+          uses: aws-actions/amazon-ecs-render-task-definition@v1
+          id: update-task-definition
+          with:
+            container-name: ${{ env.SERVICE }}
+            task-definition: ./apps/posts/deployments/taskDefinition.json
+            image: ${{ steps.login-aws-ecr-registry.outputs.registry }}/${{ needs.docker-build.outputs.posts-image }}
+
+        - name: Deploy Amazon ECS task definition
+          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+          with:
+            task-definition: ${{ steps.update-task-definition.outputs.task-definition }}
+            service: ${{ env.SERVICE }}
+            cluster: ${{ env.AWS_ECS_CLUSTER }}
+            wait-for-service-stability: false
+
+  auth-deployment:
+    name: Auth Deployment
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    needs: [docker-build]
+    env: 
+      SERVICE: auth
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: ${{ env.NODE_VERSION }}
+          
+        - uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - uses: aws-actions/amazon-ecr-login@v1
+          id: login-aws-ecr-registry
+
+        - name: Update task definition
+          uses: aws-actions/amazon-ecs-render-task-definition@v1
+          id: update-task-definition
+          with:
+            container-name: ${{ env.SERVICE }}
+            task-definition: ./apps/auth/deployments/taskDefinition.json
+            image: ${{ steps.login-aws-ecr-registry.outputs.registry }}/${{ needs.docker-build.outputs.auth-image }}
+
+        - name: Deploy Amazon ECS task definition
+          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+          with:
+            task-definition: ${{ steps.update-task-definition.outputs.task-definition }}
+            service: ${{ env.SERVICE }}
+            cluster: ${{ env.AWS_ECS_CLUSTER }}
+            wait-for-service-stability: false
