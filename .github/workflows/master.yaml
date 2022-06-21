@@ -95,6 +95,9 @@ jobs:
       - name: Create environment variable files
         run: ./ci/scripts/create-env-files.sh
 
+      - name: Upload environment files to AWS
+        run: pnpm infra:upload:env 
+
       - name: Build images and push
         id: build-images
         env:

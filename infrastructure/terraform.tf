@@ -12,7 +12,6 @@ locals {
   services_bucket_arn = aws_s3_bucket.services_bucket.arn
   cluster_id          = aws_ecs_cluster.cluster.id
   acl_rules = [
-    # ingress
     {
       from_port   = 443
       to_port     = 443
@@ -22,20 +21,19 @@ locals {
       rule_action = "allow"
     },
     {
-        rule_number = 90
-        egress = false
-        protocol = "-1"
-        rule_action = "deny"
+      rule_number = 90
+      egress      = false
+      protocol    = "-1"
+      rule_action = "deny"
     },
     {
-      from_port = 1024
-      to_port = 65534
+      from_port   = 1024
+      to_port     = 65534
       rule_number = 20
-      egress = false
-      protocol= "tcp"
+      egress      = false
+      protocol    = "tcp"
       rule_action = "allow"
     },
-    # egress
   ]
   services = [
     {
@@ -64,15 +62,15 @@ locals {
           type  = "s3"
         }
       ]
-      alb_listener_paths = []
+      alb_listener_paths    = []
       alb_listener_hostname = "speakyourownideas.com"
     },
     {
-      name              = "posts"
-      container_port    = 3001
-      health_check_path = "/api/v1/ping"
+      name                  = "posts"
+      container_port        = 3001
+      health_check_path     = "/api/v1/ping"
       alb_listener_hostname = "posts.speakyourownideas.com"
-      alb_listener_paths = ["/posts", "/posts/*"]
+      alb_listener_paths    = ["/posts", "/posts/*"]
       security_group_rules = [
         {
           type        = "ingress",
@@ -97,12 +95,12 @@ locals {
       ]
     },
     {
-      name              = "auth"
-      container_port    = 3002
-      health_check_path = "/api/v1/ping"
-      domain            = "auth.speakyourownideas.com"
+      name                  = "auth"
+      container_port        = 3002
+      health_check_path     = "/api/v1/ping"
+      domain                = "auth.speakyourownideas.com"
       alb_listener_hostname = "auth.speakyourownideas.com"
-      alb_listener_paths = ["/sign-in", "/sign-up"]
+      alb_listener_paths    = ["/sign-in", "/sign-up"]
       security_group_rules = [
         {
           type        = "ingress",
@@ -141,7 +139,7 @@ locals {
   services_alb_listener_path_rules = [
     for service in local.services : merge(service, {
       target_group_id = lookup(local.services_map, service.name).target_group_id
-    }) if length(service.alb_listener_paths) > 0 
+    }) if length(service.alb_listener_paths) > 0
   ]
   services_map = zipmap(
     [for service in local.services : service.name],
@@ -356,7 +354,7 @@ resource "aws_alb_listener_rule" "alb_listener_rules_hostname" {
 }
 
 resource "aws_alb_listener_rule" "alb_listener_rules_path" {
-  count     = length(local.services_alb_listener_path_rules)
+  count        = length(local.services_alb_listener_path_rules)
   listener_arn = aws_alb_listener.alb_listener.arn
 
   action {

@@ -30,6 +30,8 @@ Goal of this this exercise is to implement a microfrontend architecture using ta
 
 nvm use
 pnpm i
+
+3. Generate .env.production environment files
 ```
 
 ### Run pipeline locally
@@ -41,6 +43,22 @@ You can also use [nektos/act](https://github.com/nektos/act) to run your pipelin
 act -j [jobName] pull_request
 act -j [jobName] push
 ```
+
+*NOTE:* Please make sure that the `.secrets` file exists and the below environment variables are populated
+
+```bash
+FIREBASE_API_KEY=[value]
+FIREBASE_AUTH_DOMAIN=[value]
+FIREBASE_PROJECT_ID=[value]
+FIREBASE_STORAGE_BUCKET=[value]
+FIREBASE_MESSAGING_SENDER_ID=[value]
+FIREBASE_APP_ID=[value]
+FIREBASE_ADMIN_CLIENT_EMAIL=[value]
+FIREBASE_ADMIN_PRIVATE_KEY=[value]
+AWS_ACCESS_KEY_ID=[value]
+AWS_SECRET_ACCESS_KEY=[value]
+```
+
 
 ### Dynamically generate .env.production files
 1. Export below environment variables
@@ -86,14 +104,6 @@ domain_certificate_arn = [arn of the HTTPS certificate you created]
 pnpm infra:apply
 ```
 
-4. Generate `.env.production` files and upload them to s3 bucket. 
-```bash
-# Check section 'Dynamically generate .env.production files'
-./ci/scripts/create-env-files.sh
+4. Update the hosted zone you created in Route53 so that the A records point to your load balancer
 
-pnpm infra:upload:env
-```
-
-5. Update the hosted zone you created in Route53 so that the A records point to your load balancer
-
-6. Run master pipeline to deploy the apps
+5. Run master pipeline to deploy the apps
